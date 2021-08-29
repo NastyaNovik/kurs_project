@@ -26,6 +26,5 @@ namespace WebApplication1.ViewModels
         public string ThirdFieldValue { get; set; }
 
         public string ImageUrl { get; set; }
-        public DateTime DateTheItemWasAdded { get; set; }
     }
 }

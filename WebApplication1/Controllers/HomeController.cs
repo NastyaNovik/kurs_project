@@ -220,6 +220,13 @@ namespace WebApplication1.Controllers
             ViewBag.Id = Id;
             return View("AddItem");
         }
+        public DateTime getCurrentTime()
+        {
+            DateTime utcTime = DateTime.UtcNow;
+            TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("Belarus Standard Time");
+            DateTime localTime = TimeZoneInfo.ConvertTime(utcTime, tz);
+            return localTime;
+        }
         public async Task<IActionResult> AddItemIntoCollection(IFormFile uploadedFile, AddItemViewModel model, int Id)
         {
             Item item = new Item
@@ -231,13 +238,13 @@ namespace WebApplication1.Controllers
                 ThirdFieldValue = model.ThirdFieldValue,
                 ImageUrl = LoadImage(uploadedFile),
                 IdCollection = Id,
-                DateTheItemWasAdded = model.DateTheItemWasAdded
+                DateTheItemWasAdded = getCurrentTime()
             };
             db.Items.Add(item);
-            Collection collection = await db .Collection.FindAsync(Id);
+            Collection collection = await db.Collection.FindAsync(Id);
             collection.CountOfItems++;
             await db.SaveChangesAsync();
-            return RedirectToAction("CollectionPage", new { id = Id });
+            return RedirectToAction("CollectionPage", new { id = Id });           
         }
         public List<Like> findLikes(int id)
         {
