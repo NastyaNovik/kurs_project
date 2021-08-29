@@ -1,0 +1,44 @@
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+@{
+    ViewBag.Title = "Login";
+}
+<link rel="stylesheet" type="text/css" href="~/css/account.css" />
+<link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css" />
+
+@model WebApplication1.ViewModels.LoginViewModel
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <div class="tab" role="tabpanel">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">sign in</a></li>
+                    <li role="presentation"><a asp-action="Register">sign up</a></li>
+                </ul>
+                <div class="tab-content tabs">
+                    <div role="tabpanel" class="tab-pane fade in active" id="Section1">
+                        <form class="form-horizontal" method="post" asp-controller="Account" asp-action="Login"
+                              asp-route-returnUrl="@Model.ReturnUrl">
+
+                            <div class="form-group">
+                                <label>Username</label><br />
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password"></label><br />
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Login" class="btn btn-info" />
+                            </div>
+                            <a class="btn btn-info" asp-action="GoogleLogin">Login With Google</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

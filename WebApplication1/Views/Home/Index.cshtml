@@ -1,0 +1,77 @@
+﻿@using WebApplication1.ViewModels
+@model IndexViewModel
+@addTagHelper *, WebApplication1
+@{
+    ViewBag.Title = "Main";
+}
+<link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="~/css/index.css" />
+@if (User.Identity.IsAuthenticated)
+{
+<div class="set">
+    <form method="post">
+        @if (User.IsInRole("admin"))
+            {
+        <button type="submit" class="btn btn-info btn-rounded" asp-controller="User" asp-action="UserList" name="button">
+            <i class="fa fa-user" style="padding: 4px 6px;"></i>User List
+        </button>
+            }
+        <a class="btn btn1 btn-rounded" href="/Home/PersonalArea/@ViewBag.UserId">Go to personal area</a>
+
+        <button type="submit" class="btn btn-info btn-rounded" asp-controller="Account" asp-action="Logout" name="button">
+            <i class="fa fa-sign-out" style="padding: 4px 6px;"></i>Exit
+        </button>
+
+        <b class="Username">Welcome, @User.Identity.Name!</b>
+    </form>
+</div>
+}
+
+<div class="contain">
+
+    <table class="table">
+        <tr><b style="font-size:24px; text-transform:uppercase; color:white;margin:0 15px">Last added items</b></tr>
+        @foreach (var item in ViewBag.items)
+        {
+        <tr>
+            <td style="vertical-align: top">
+                <a class="text-uppercase text-info" style="font-size: 26px; text-shadow: black 0.1em 0.1em 0.2em " href="/Home/ItemPage/@item.IdItem">@item.Name</a>
+                <br /><i class="border border-secondary">@item.Tags</i>
+            </td>
+            <td>
+                Collection: <br />@item.CollectionName
+            </td>
+            <td>
+                User: <br /><a class="text-uppercase text-warning" style="font-size: 16px; text-shadow: black 0.1em 0.1em 0.2em " href="/Home/PersonalArea/@item.IdUser">@item.UserName</a>
+            </td>
+            <td>
+                Date of addition: <br />@item.DateOfAddition
+            </td>
+
+        </tr>
+        }
+    </table>
+</div>
+
+<div class="contain">
+    <table class="table">
+        <tr><b style="font-size:24px; text-transform:uppercase; color:white;margin:0 15px">Largest collections</b></tr>
+        @foreach (var collection in ViewBag.collect)
+        {
+        <tr>
+            <td style="vertical-align: top">
+                <a class="text-uppercase text-info" style="font-size: 26px; text-shadow: black 0.1em 0.1em 0.2em " href="/Home/CollectionPage/@collection.IdCollection">@collection.CollectionName</a>
+                <br /><span>Count of items in collection: @collection.CountOfItems</span>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+                User: <br /><a class="text-uppercase text-warning" style="font-size: 16px; text-shadow: black 0.1em 0.1em 0.2em " href="/Home/PersonalArea/@collection.IdUser">@collection.UserName</a>
+            </td>
+        </tr>
+        }
+    </table>
+</div>
+<a class="btn btn1 btn-rounded" href="/Home/AllCollections/@ViewBag.UserId">Click here to get all collections</a>
+
+

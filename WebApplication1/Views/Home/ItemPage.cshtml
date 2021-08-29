@@ -1,0 +1,156 @@
+﻿@using WebApplication1.ViewModels
+@model IndexViewModel
+<link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="~/css/style.css" />
+<style>
+    #like {
+        width: 38px;
+        height: 38px;
+        border-radius: 19px;
+        text-align: center;
+        padding-left: 0;
+        padding-right: 0;
+        font-size: 16px;
+        border: none;
+    }
+
+    .likes {
+        display: inline-block;
+    }
+
+    #countOfLikes {
+        font-size: 19px;
+        font-weight: bold;
+        color: white;
+        margin-top: 10px;
+    }
+
+    #sendBtn {
+        width: 15%;
+        background: #e8b600;
+        padding: 10px 20px;
+        border: none;
+        font-size: 13px;
+        font-weight: bold;
+        color: #fff;
+        border-radius: 20px;
+        text-transform: uppercase;
+        margin: 10px 0 20px 10px;
+        text-align: center;
+    }
+</style>
+<body>
+    <div class="contain">
+        <center>
+            @foreach (var item in Model.Items)
+            {
+                ViewBag.Title = item.Name;
+            <h1 style="color:white; text-transform:uppercase">@item.Name</h1>
+            <img src="@item.ImageUrl" class="img-fluid img-thumbnail" width="600" />
+            <br /><i class="border border-secondary" style="color:white; font-size:18px">@item.Tags</i>
+            }
+        </center>
+    </div>
+
+    <div class="contain">
+        <center>
+            @if (User.Identity.IsAuthenticated)
+            {
+            <div class="likes">
+                <button id="like" style="background-color: gray;" onclick="LikeDislike()">
+                    <i class="fa fa-heart text-light"></i>
+                </button>
+            </div>
+            }
+            <div class="likes">
+                <p id="countOfLikes">@Model.CountOfLIkes</p>
+            </div>
+        </center>
+
+        <div id="block" style="overflow-y: scroll; height: auto; max-height:450px">
+            <table class="table-bordered" id="comments">
+                @foreach (var com in ViewBag.Comments)
+                {
+                <tr>
+                    <td>
+                        <a class="text-uppercase text-warning" style=" font-size: 16px; text-shadow: black 0.1em 0.1em 0.2em" href="/Home/PersonalArea/@com.IdUser" target="_blank">@com.UserName</a>
+                        <br />@com.CommentText
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+        <div id="inputForm">
+            <div class="form-group">
+                <textarea style="margin-top: 35px; background-color: rgba(235, 232, 221, 0.8); color:black;" class="form-control" id="comment" asp-route-id="@ViewBag.IdItem" rows="3" placeholder="Add your comment"></textarea>
+            </div>
+
+            <input type="button" id="sendBtn" value="Send" class="btn btn-info" />
+        </div>
+        }
+    </div> 
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script>      
+            if (@ViewBag.countOfLikesUser== 1) {
+                document.getElementById("like").style.backgroundColor = "red";
+            }
+                var block = document.getElementById("block");
+                block.scrollTop = block.scrollHeight;
+        const hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/chat")
+            .build();
+
+            hubConnection.on("Send", function (message, IdItem,UserId,UserName) {
+            let username = document.createElement("tr");
+            username.style.border = "none";
+            let td = document.createElement("td");
+                var e = document.createElement('a');
+            e.href = "/Home/PersonalArea/" + UserId;
+            e.target = "_blank";
+            e.className = "text-uppercase text-warning";
+            e.style.textShadow="black 0.1em 0.1em 0.2em";
+            e.title = UserName;
+            e.appendChild(document.createTextNode(UserName));
+            username.appendChild(td);
+            td.appendChild(e);
+            document.getElementById("comments").insertAdjacentElement('beforeend', username);
+            let com = document.createElement("br");
+            td.appendChild(com);
+            td.appendChild(document.createTextNode(message));
+            document.getElementById("comments").insertAdjacentElement('beforeend', td).style.color = "white";
+            if (UserName=="@ViewBag.username")
+            document.getElementById("comment").value = "";
+            block.scrollTop = block.scrollHeight;
+        });
+
+               document.getElementById("sendBtn").addEventListener("click", function (e) {
+               let message = document.getElementById("comment").value;
+               hubConnection.invoke("Send", message,@ViewBag.IdItem, "@ViewBag.UserId","@ViewBag.username");
+               });
+
+                hubConnection.on("Like", function () {
+                    let countlikes = document.getElementById("countOfLikes").innerHTML;
+                    let value = parseInt(countlikes, 10) + 1;
+                    document.getElementById("countOfLikes").innerHTML = value;
+                });
+                hubConnection.on("DisLike", function () {
+                    let countlikes = document.getElementById("countOfLikes").innerHTML;
+                    let value = parseInt(countlikes, 10) - 1;
+                    document.getElementById("countOfLikes").innerHTML = value;
+                });
+                function LikeDislike() {
+
+                    if (document.getElementById("like").style.backgroundColor == "gray") {
+                        document.getElementById("like").style.backgroundColor = "red";
+                        hubConnection.invoke("Like", @ViewBag.IdItem, "@ViewBag.UserId");
+                    }
+                    else {
+                        document.getElementById("like").style.backgroundColor = "gray";
+                        hubConnection.invoke("DisLike", @ViewBag.IdItem, "@ViewBag.UserId");
+                    }
+                }
+                hubConnection.start();
+    </script>
+</body>

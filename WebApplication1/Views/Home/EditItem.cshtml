@@ -1,0 +1,54 @@
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+@model WebApplication1.ViewModels.AddItemViewModel
+@{
+    ViewBag.Title = "Edit item";
+}
+<link rel="stylesheet" type="text/css" href="~/css/edit.css" />
+<link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css" />
+
+<h2>Edit the item</h2>
+<div class="bo">
+    <div class="container">
+
+        <div class="col-md-offset-3 col-md-6">
+            <div class="form-group">
+                <form asp-action="EditItem" asp-controller="Home" asp-route-id="@ViewBag.Id" asp-route-idItem="@ViewBag.IdItem" method="post" enctype="multipart/form-data">
+                    <div>
+                        <div class="form-group">
+                            <label asp-for="Name"></label><br />
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Tags"></label><br />
+                            <textarea class="form-control" asp-for="Tags" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>@ViewBag.FirstFieldName</label><br />
+                            <input asp-for="FirstFieldValue" class="form-control" />
+                            <span asp-validation-for="FirstFieldValue"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>@ViewBag.SecondFieldName</label><br />
+                            <input asp-for="SecondFieldValue" class="form-control" />
+                            <span asp-validation-for="SecondFieldValue"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>@ViewBag.ThirdFieldName</label><br />
+                            <input asp-for="ThirdFieldValue" class="form-control" />
+                            <span asp-validation-for="ThirdFieldValue"></span>
+                        </div>
+                    </div>
+                    <center>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-default" value="Save" />
+                        </div>
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

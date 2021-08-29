@@ -1,0 +1,41 @@
+﻿body {
+    background-image: url("https://res.cloudinary.com/dwigle/image/upload/v1628602361/images/wzbrxacbav6oq3hbtub5.jpg");
+    background-size: cover;
+}
+
+span {
+    font-size: 18px;
+}
+
+.contain {
+    background-color: rgba(23, 22, 22, 0.8);
+}
+
+.btn-rounded {
+    border-radius: 19px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+}
+
+td, th {
+    color: white;
+}
+
+.btnsort {
+    width: 20%;
+    background: rgba(23, 22, 22, 0.8);
+    padding: 10px 20px;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 20px;
+    text-transform: uppercase;
+    margin: 10px 0 20px 0;
+    text-align: center;
+}
+
+    .btnsort:hover {
+        color: cadetblue;
+    }

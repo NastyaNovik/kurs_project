@@ -1,0 +1,71 @@
+﻿@using WebApplication1.ViewModels
+@model IndexViewModel
+@addTagHelper *, WebApplication1
+@{
+    ViewBag.Title = "Personal area";
+}
+<link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="~/css/style.css" />
+<form method="post">
+    <center>
+        <div class="contain">
+            <table class="table">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (ViewBag.check || User.IsInRole("admin"))
+                    {
+                        <tr>
+                            <th colspan="2">
+                                <button type="submit" class="btn btn-danger btn-rounded" asp-route-id="@ViewBag.UserId" asp-action="DeleteCollection" name="button">
+                                    <i class="fa fa-trash text-danger rounded-circle bg-white mr-1" style="padding: 4px 6px;"></i>Delete
+                                </button>
+                                <button type="submit" class="btn btn-success btn-rounded" asp-route-id="@ViewBag.UserId" asp-action="GoToAddCollection" name="button">
+                                    <i class="fa fa-plus text-success rounded-circle bg-white mr-1" style="padding: 4px 6px;"></i>Add new collection
+                                </button>
+                            </th>
+                            <th style="float:right"><input type="checkbox" class="all" onClick="checkall(this)" data-id="d1" style="margin: 5px">Select all</th>
+                        </tr>
+                    }
+                }
+                    @foreach (var item in Model.Collections)
+                    {
+                <tr>
+                <td width="610"><img src="@item.ImageUrl" class="img-fluid img-thumbnail" width="600" /></td>
+                <td style="vertical-align: top">
+                    <a class="text-uppercase text-info" style="font-size: 26px; text-shadow: black 0.1em 0.1em 0.2em " href="/Home/CollectionPage/@item.Id">@item.Name</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (ViewBag.check || User.IsInRole("admin"))
+                        {
+                            <button style="float:right" type="submit" asp-route-id="@item.Id" class="btn btn-info btn-rounded" asp-route-idUser="@ViewBag.UserId" asp-action="GoToEditCollection" name="button">
+                                <i class="fa fa-edit text-primary rounded-circle bg-white mr-1" style="padding: 4px 4px;"></i>Edit
+                            </button>
+                        }
+
+                    }
+                        <br /><span>Topic: @item.Topic</span>
+                    </td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (ViewBag.check || User.IsInRole("admin"))
+                    {
+                        <td width="10"><input type="checkbox" name="selectedCollections" id="@item.Id" value="@item.Id" class="one" data-id="d1"></td>
+                    }
+                }
+                </tr>
+                        <tr><td colspan="2" style="text-align:justify"><span>Description:</span><br />@item.Description</td></tr>
+                    }
+                </table>
+        </div>
+    </center> 
+</form>
+<page-link page-model="Model.PageViewModel" page-action="PersonalArea"></page-link>
+<script type="text/javascript">
+  
+        function checkall(source) {
+            checkboxes = document.getElementsByName('selectedCollections');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+</script>

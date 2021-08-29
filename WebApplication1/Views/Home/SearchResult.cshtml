@@ -1,0 +1,58 @@
+﻿@using WebApplication1.ViewModels
+@model IndexViewModel
+@addTagHelper *, WebApplication1
+@{
+    ViewBag.Title = "Items";
+}
+<link rel="stylesheet" type="text/css" href="~/css/style.css" />
+<link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css" />
+<form asp-action="SearchResult" asp-route-search="@ViewBag.search">
+    <div class="form-group border border-secondary">
+        <label class="control-label" style="color:white; font-size:18px; font-weight:bold; text-transform:uppercase">Select user: </label>
+        <select class="form-control" id="user" name="user">
+            @foreach (var user in ViewBag.users)
+            {
+            <option>@user.UserName</option>
+            }
+        </select>
+        <input type="submit" value="Filter" class="btnsort" />
+    </div>
+</form>
+<center>
+    <div class="contain">
+        <table class="table">
+            @foreach (var item in Model.IndexView)
+            {
+            <tr>
+                <td>
+                    <a class="text-uppercase text-info" style="font-size: 26px; text-shadow: black 0.1em 0.1em 0.2em " href="/Home/ItemPage/@item.IdItem">@item.Name</a>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    <a class="text-uppercase text-warning" style="font-size: 16px; text-shadow: black 0.1em 0.1em 0.2em " href="/Home/PersonalArea/@item.IdUser">@item.UserName</a>
+                    <br />@item.CollectionName
+                </td>
+            </tr>
+            }
+        </table>
+    </div>
+</center>
+<page-link page-model="Model.PageViewModel" page-action="SearchResult"></page-link>
+<script>
+    var user = document.getElementById('user');
+    user.onchange = function () {
+        document.cookie = 'user=' + user.value + '; path=/;';
+    };
+    function getCookie(name) {
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+    var select = document.getElementById('user'),
+        cookie = getCookie('user');
+    if (cookie) {
+        select.value = cookie;
+    }
+</script>

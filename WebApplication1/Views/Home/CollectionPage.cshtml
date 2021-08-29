@@ -1,0 +1,82 @@
+﻿@using WebApplication1.ViewModels
+@model IndexViewModel
+@addTagHelper *, WebApplication1
+@{
+    ViewBag.Title = "Collection page";
+}
+<link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="~/css/style.css" />
+
+<form asp-action="CollectionPage" asp-route-id="@ViewBag.Id">
+    <br />
+    <div class="form-group border border-secondary">
+        <input type="submit" class="btnsort" value="Sort by" />
+
+        <select class="form-group" name="selectedSort" style="font-size:16px; border-radius:10px; border:groove; font-weight:bold; width:21%">
+            <option>Date of addition the item &#8657;</option>
+            <option>Date of addition the item &#8659;</option>
+            <option>Name</option>
+        </select>
+    </div>
+</form>
+<form method="post">
+    <center>
+        <div class="contain">
+            <table class="table">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (ViewBag.check || User.IsInRole("admin"))
+                    {
+                        <tr>
+                            <th colspan="2">
+                                <button type="submit" class="btn btn-danger btn-rounded" asp-action="DeleteItem" asp-route-id="@ViewBag.Id" name="button">
+                                    <i class="fa fa-trash text-danger rounded-circle bg-white mr-1" style="padding: 4px 6px;"></i>Delete
+                                </button>
+                                <button type="submit" class="btn btn-success btn-rounded" asp-route-id="@ViewBag.Id" asp-action="GoToAddItem" name="button">
+                                    <i class="fa fa-plus text-success rounded-circle bg-white mr-1" style="padding: 4px 6px;"></i>Add the item
+                                </button>
+                            </th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th style="float:right"><input type="checkbox" class="all" onClick="checkall(this)" data-id="d1" style="margin: 5px">Select all</th>
+                        </tr>
+                    }
+                }
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td style="vertical-align: top">
+                            <a class="text-uppercase text-info" style="font-size: 26px; text-shadow: black 0.1em 0.1em 0.2em " asp-action="ItemPage" asp-route-id="@item.Id">@item.Name</a>
+                            <br />Date of addition: <br />@item.DateTheItemWasAdded<br /><i class="border border-secondary">@item.Tags</i>
+                        </td>
+                        <td>@ViewBag.FirstFieldName: @item.FirstFieldValue</td>
+                        <td>@ViewBag.SecondFieldName: @item.SecondFieldValue</td>
+                        <td>@ViewBag.ThirdFieldName: @item.ThirdFieldValue</td>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (ViewBag.check || User.IsInRole("admin"))
+                            {
+                                <td>
+                                    <button style="float:right" type="submit" asp-route-id="@item.Id" asp-route-idCollection="@ViewBag.Id" class="btn btn-info btn-rounded" asp-action="GoToEditItem" name="button">
+                                        <i class="fa fa-edit text-primary rounded-circle bg-white mr-1" style="padding: 4px 4px;"></i>Edit
+                                    </button>
+                                </td>
+                                <td width="10"><input type="checkbox" name="selectedItems" id="@item.Id" value="@item.Id" class="one" data-id="d1"></td>
+                            }
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </center>
+</form>
+
+<page-link page-model="Model.PageViewModel" page-action="CollectionPage"></page-link>
+<script type="text/javascript">
+    function checkall(source) {
+        checkboxes = document.getElementsByName('selectedItems');
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+</script>

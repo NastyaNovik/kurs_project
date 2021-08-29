@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication1</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        .searchb {
+            background-color: #5bc0de;
+            color: white;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-width: 0;
+            outline: none;
+            cursor: pointer;
+        }
+
+            .searchb:hover {
+                box-shadow: 5px 5px 0 #0f0f0e;
+            }
+
+        .search {
+            display: inline-block
+        }
+        .t:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-gray border-bottom box-shadow mb-3" style="background-color: rgba(61, 61, 61, 0.7)">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color:white">Home</a>
+                <form method="post" asp-action="SearchResult" asp-controller="Home" style="float:right">
+                    <div class="search">
+                        <input type="text" name="search" placeholder="Search here..." />
+                    </div>
+                    <div class="search">
+                        <button type="submit" class="searchb">
+                            <i class="fa fa-search" style="padding: 4px 6px;"></i>Search
+                        </button>
+                    </div>
+                </form>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                </div>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div style="margin-left:10px; float:right">
+                        <a class="t text-uppercase" style="font-size: 26px; text-shadow: black 0.1em 0.1em 0.2em; " asp-controller="Account" asp-action="Login">Login /</a>
+                        <a class="t text-uppercase " style="font-size: 26px; text-shadow: black 0.1em 0.1em 0.2em " asp-controller="Account" asp-action="Register"> Registration</a>
+                    </div>
+                }
+            </div>           
+        </nav>       
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

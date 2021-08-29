@@ -1,0 +1,66 @@
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+@{
+    ViewBag.Title = "Adding the collection";
+}
+@model WebApplication1.ViewModels.AddCollectionViewModel
+<link rel="stylesheet" type="text/css" href="~/css/addingPage.css" />
+<link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css" />
+
+<h2>Adding a new collection</h2>
+<div class="bo">
+    <div class="container">
+
+        <div class="col-md-offset-3 col-md-6">
+            <div class="form-group">
+                <form asp-action="AddCollection" asp-controller="Home" method="post" asp-route-id="@ViewBag.UserId" enctype="multipart/form-data">
+                    <div>
+                        <div class="form-group">
+                            <label asp-for="Name"></label><br />
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description"></label><br />
+                            <textarea class="form-control" asp-for="Description" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Topic"></label><br />
+                            <select class="form-control" asp-for="Topic">
+                                @foreach (var topic in ViewBag.topics)
+                                {
+                                <option>@topic.Topic</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FirstFieldName"></label><br />
+                            <input asp-for="FirstFieldName" class="form-control" placeholder="Author" />
+                            <span asp-validation-for="FirstFieldName"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SecondFieldName"></label><br />
+                            <input asp-for="SecondFieldName" class="form-control" placeholder="Year of creation" />
+                            <span asp-validation-for="SecondFieldName"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ThirdFieldName"></label><br />
+                            <input asp-for="ThirdFieldName" class="form-control" placeholder="Country" />
+                            <span asp-validation-for="ThirdFieldName"></span>
+                        </div>
+                    </div>
+                    <label>Choose an image for your collection</label>
+                    <div class="border border-secondary">
+                        <input type="file" size="60" name="uploadedFile" asp-for="ImageUrl" /><br>
+                    </div>
+                    <center>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-default" value="Save" />
+                        </div>
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
