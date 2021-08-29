@@ -30,7 +30,7 @@
                     @foreach (var item in Model.Collections)
                     {
                 <tr>
-                <td width="610"><img src="@item.ImageUrl" class="img-fluid img-thumbnail" width="600" /></td>
+                <td width="610"><img src="@item.ImageUrl" class="img-fluid" width="600" /></td>
                 <td style="vertical-align: top">
                     <a class="text-uppercase text-info" style="font-size: 26px; text-shadow: black 0.1em 0.1em 0.2em " href="/Home/CollectionPage/@item.Id">@item.Name</a>
                     @if (User.Identity.IsAuthenticated)
