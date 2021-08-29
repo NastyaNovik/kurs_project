@@ -100,19 +100,14 @@ namespace WebApplication1.Controllers
             if (user != null)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
-                var allRoles = _roleManager.Roles.ToList();
                 var addedRoles = roles.Except(userRoles);
                 var removedRoles = userRoles.Except(roles);
-
                 await _userManager.AddToRolesAsync(user, addedRoles);
-
                 await _userManager.RemoveFromRolesAsync(user, removedRoles);
-
                 return RedirectToAction("UserList","User");
             }
             return NotFound();
         }
-
         public ActionResult UserList()
         {
             return View(_userManager.Users.ToList());
