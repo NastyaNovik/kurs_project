@@ -88,7 +88,7 @@ namespace WebApplication1.Controllers
         }
         public IActionResult GoogleLogin()
         {
-            string redirectUrl = Url.Action("GoogleResponse", "Account");
+            string redirectUrl = Url.Action("GoogleResponse");
             var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
             return new ChallengeResult("Google", properties);
         }

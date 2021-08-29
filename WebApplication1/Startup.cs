@@ -28,7 +28,7 @@ namespace WebApplication1
 
             services.AddIdentity<User, IdentityRole>(opts =>
             {
-                opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
+                opts.User.AllowedUserNameCharacters = "àáâãäå¸æçèéêëìíîïğñòóôõö÷ø÷úûüışÿabcdefghijklmnopqrstuvwxyzÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙİŞßABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
                 opts.User.RequireUniqueEmail = true;
                 opts.Password.RequiredLength = 3;
                 opts.Password.RequireNonAlphanumeric = false;
